@@ -75,7 +75,7 @@ runs:
           export COMMIT_TAG=${COMMIT_TAG//v/}
         else
           if [ -z ${IMAGE_TAG} ]; then
-            export COMMIT_TAG=latest
+            export COMMIT_TAG=testing
           else
             export COMMIT_TAG=${IMAGE_TAG}
           fi
@@ -119,6 +119,12 @@ runs:
         set +x
 
         echo "::endgroup::"
+
+        echo "::group::Adding additional tags"
+        if [ "${{ github.event_name }}" = "release" ]; then
+          export ADDITIONAL_TAG=latest
+        fi
+        docker image tag ${{ inputs.repository }}/${IMAGE_NAME}:${COMMIT_TAG} ${{ inputs.repository }}/${IMAGE_NAME}:${ADDITIONAL_TAG} && echo "Tagged as ${ADDITIONAL_TAG}"
 
         echo "::group::Inspecting the image ..."
         docker images
