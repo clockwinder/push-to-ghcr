@@ -138,7 +138,7 @@ runs:
         echo "::endgroup::"
 
         echo "::group::Pushing the Docker image to ${{ inputs.repository }} ..."
-        >&0 docker push ${{ inputs.repository }}/${IMAGE_NAME}:${COMMIT_TAG} && echo "Pushed"
+        >&0 docker image push --all-tags ${{ inputs.repository }}/${IMAGE_NAME} && echo "Pushed"
         echo "::endgroup::"
 
         if [ -z "${DOCKER_IO_TOKEN}" ]; then
