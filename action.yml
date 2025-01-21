@@ -123,8 +123,8 @@ runs:
         echo "::group::Adding additional tags"
         if [ "${{ github.event_name }}" = "release" ]; then
           export ADDITIONAL_TAG=latest
+          docker image tag ${{ inputs.repository }}/${IMAGE_NAME}:${COMMIT_TAG} ${{ inputs.repository }}/${IMAGE_NAME}:${ADDITIONAL_TAG} && echo "Tagged as ${ADDITIONAL_TAG}"
         fi
-        docker image tag ${{ inputs.repository }}/${IMAGE_NAME}:${COMMIT_TAG} ${{ inputs.repository }}/${IMAGE_NAME}:${ADDITIONAL_TAG} && echo "Tagged as ${ADDITIONAL_TAG}"
 
         echo "::group::Inspecting the image ..."
         docker images
